@@ -14,10 +14,10 @@ You can run this locally with either Gunicorn
 	    "stat": "ok"
 	}
 	
-on heroku
+On Heroku
 --
 
-You can run this locally with foreman to test before pushing to heroku
+You can run this locally with foreman to test before pushing to [Heroku](http://heroku.com)
 
 	$ virtualenv venv --distribute
 	$ source venv/bin/activate
@@ -32,12 +32,12 @@ Once tested, use the Heroku gem to create a new app
 	
 This should result in the same output as above.
 
-using with POST
+Using with POST
 --
 
-You can also send image data directly with a POST command either via the web form or via curl as follows
+You can also send image data directly with a POST either via the web form or via curl as follows
 
-	$ curl --form "imageupload=@YOU_LOCAL_FILE.jpg" http://your-heroku-app.com
+	$ curl --form "imageupload=@YOUR_LOCAL_FILE.jpg" http://your-heroku-app.com
 
 Dependencies
 --

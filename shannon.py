@@ -43,7 +43,7 @@ def app(environ, start_response):
 		
 		
 		
-	# open the image and calculate its shanon entropy
+	# open the image and calculate its shannon entropy
 		
 	try:
 		im = Image.open(data)
