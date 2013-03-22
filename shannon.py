@@ -40,7 +40,8 @@ def app(environ, start_response):
 	elif path:
 		path = path[0]
 		data = cStringIO.StringIO(urllib.urlopen(path).read())
-	
+		
+		
 		
 	# open the image and calculate its shanon entropy
 		
