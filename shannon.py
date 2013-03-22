@@ -2,6 +2,8 @@ import Image
 import math
 import cgi
 import json
+import cStringIO
+import urllib
 
 def shannon_entropy(img):
 
@@ -20,32 +22,41 @@ def app(environ, start_response):
 	status = '200 OK'
 	rsp = {}
 	
-	# determine the size of the request_body
+	# determine the size of the request_body, and grab any params
 	
 	try:
 		request_body_size = int(environ.get('CONTENT_LENGTH', 0))
+		params = cgi.parse_qs(environ.get('QUERY_STRING', ''))
+		path = params.get('path', None)
 	except (ValueError):
 		request_body_size = 0
 	
-	# if request_body is larger than 0, we have data
+	# look for data as either a POST or path param
 	
 	if request_body_size!=0:
 		form = cgi.FieldStorage(fp=environ['wsgi.input'], environ=environ)
 		fileitem = form['imageupload']	
+		data = fileitem.file
+	elif path:
+		path = path[0]
+		data = cStringIO.StringIO(urllib.urlopen(path).read())
+	
 		
-		# open the image and calculate its shanon entropy
+	# open the image and calculate its shanon entropy
 		
-		try:
-			im = Image.open(fileitem.file)
-			rsp['shannon-entropy'] = shannon_entropy(im)
-			rsp['stat'] = 'ok'
-		except Exception, e:
-			rsp = {'stat': 'error', 'error': "failed to process image: %s" % e}
+	try:
+		im = Image.open(data)
+		rsp['shannon-entropy'] = shannon_entropy(im)
+		rsp['stat'] = 'ok'
+	except Exception, e:
+		rsp = {'stat': 'error', 'error': "failed to process image: %s" % e}
 			
-		if rsp['stat'] != 'ok':
-			status = "500 SERVER ERROR"
-			
+	if rsp['stat'] != 'ok':
+		status = "500 SERVER ERROR"
+	else:		
 		rsp = json.dumps(rsp)
+	
+		# return the result as json 
 		
 		start_response("200 OK", [
 					("Content-Type", "text/javascript"),
@@ -53,8 +64,7 @@ def app(environ, start_response):
 					])
 		
 		return iter([rsp])
-		
-		
+					
 	# otherwise we just return the form
 	
 	start_response("200 OK", [
