@@ -4,6 +4,9 @@ import cgi
 import json
 import cStringIO
 import urllib
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 def shannon_entropy(img):
 
@@ -18,7 +21,7 @@ def shannon_entropy(img):
 
 
 def app(environ, start_response):
-		
+	data = ''	
 	status = '200 OK'
 	rsp = {}
 	
@@ -28,7 +31,8 @@ def app(environ, start_response):
 		request_body_size = int(environ.get('CONTENT_LENGTH', 0))
 		params = cgi.parse_qs(environ.get('QUERY_STRING', ''))
 		path = params.get('path', None)
-	except (ValueError):
+	except Exception, e:
+		logging.error(e)
 		request_body_size = 0
 	
 	# look for data as either a POST or path param
@@ -50,12 +54,15 @@ def app(environ, start_response):
 		rsp['shannon-entropy'] = shannon_entropy(im)
 		rsp['stat'] = 'ok'
 	except Exception, e:
+		logging.error(e)
 		rsp = {'stat': 'error', 'error': "failed to process image: %s" % e}
 			
 	if rsp['stat'] != 'ok':
 		status = "500 SERVER ERROR"
 	else:		
 		rsp = json.dumps(rsp)
+		
+		logging.debug(status)
 	
 		# return the result as json 
 		
