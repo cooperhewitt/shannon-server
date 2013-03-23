@@ -80,13 +80,16 @@ def app(environ, start_response):
 # basic form for uploading an image
 
 html = """
+<!DOCTYPE html>
 <html>
-<body>
-<form id="mainform" enctype="multipart/form-data" action="/" method="post" >
-<label for="imageupload">Image file:</label>
-<input name="imageupload" id="imageupload" type="file" /><br />
-<input name="submit" id="submit" type="submit" value="submit"> 
-</form>
-</body>
+	<head>
+		<title>Shannon Entropy Server</title>
+	</head>
+	<body>
+		<form id="mainform" enctype="multipart/form-data" action="/" method="post" name="mainform">
+			<label for="imageupload">Image file:</label> <input name="imageupload" id="imageupload" type="file"><br>
+			<input name="submit" id="submit" type="submit" value="submit">
+		</form>
+	</body>
 </html>
 """
