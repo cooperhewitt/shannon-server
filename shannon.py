@@ -44,7 +44,6 @@ def app(environ, start_response):
 	elif path:
 		path = path[0]
 		path = urllib.unquote(path)
-		print path
 		data = cStringIO.StringIO(urllib.urlopen(path).read())
 		
 		
