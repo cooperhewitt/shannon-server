@@ -1,1 +1,1 @@
-web: gunicorn shannon:app -w 3
+web: newrelic-admin run-program gunicorn shannon:app -w 3
