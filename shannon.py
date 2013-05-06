@@ -41,8 +41,9 @@ def json_response(environ, start_response):
 		path = path[0]
 
 		try:
-			rsp['stat'] = 'ok'
-			rsp['shannon'] = shannon_entropy(path)	
+			im = Image.open(data)
+			rsp['shannon'] = shannon_entropy(im)
+			rsp['stat'] = 'ok'	
 		except Exception, e:
 			logging.error(e)
 			rsp = {'stat': 'error', 'error': "failed to process image: %s" % e}
