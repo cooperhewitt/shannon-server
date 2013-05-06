@@ -26,7 +26,7 @@ def index(environ, start_response):
 	return ['''Shannon Entropy''']
 
 def json_response(environ, start_response):
-
+	data = ''
 	status = '200 OK'
 	rsp = {}
 
@@ -39,6 +39,8 @@ def json_response(environ, start_response):
 
 	else:
 		path = path[0]
+		path = urllib.unquote(path)
+		data = cStringIO.StringIO(urllib.urlopen(path).read())
 
 		try:
 			im = Image.open(data)
