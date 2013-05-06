@@ -10,6 +10,21 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
+html = """
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Shannon Entropy Server</title>
+	</head>
+	<body>
+		<form id="mainform" enctype="multipart/form-data" action="/" method="post" name="mainform">
+			<label for="imageupload">Image file:</label> <input name="imageupload" id="imageupload" type="file"><br>
+			<input name="submit" id="submit" type="submit" value="submit">
+		</form>
+	</body>
+</html>
+"""
+
 def shannon_entropy(img):
 
 	# calculate the shannon entropy for an image
@@ -22,8 +37,36 @@ def shannon_entropy(img):
 	return -sum([p * math.log(p, 2) for p in samples_probability if p != 0])
 
 def index(environ, start_response):
-	start_response('200 OK', [('Content-Type', 'text/html')])
-	return ['''Shannon Entropy''']
+	data = ''	
+	status = '200 OK'
+	rsp = {}
+		
+	try:
+		request_body_size = int(environ.get('CONTENT_LENGTH', 0))
+		params = cgi.parse_qs(environ.get('QUERY_STRING', ''))
+	except Exception, e:
+		logging.error(e)
+		request_body_size = 0
+		
+	if request_body_size!=0:
+		form = cgi.FieldStorage(fp=environ['wsgi.input'], environ=environ)
+		fileitem = form['imageupload']	
+		data = fileitem.file
+		im = Image.open(data)
+		rsp['shannon'] = shannon_entropy(im)
+		shannon = "Shannon Entropy = " + str(rsp['shannon'])
+		start_response("200 OK", [
+						("Content-Type", "text/html"),
+						("Content-Length", str(len(shannon)))
+						])
+		return iter([shannon])
+	
+	start_response("200 OK", [
+					("Content-Type", "text/html"),
+					("Content-Length", str(len(html)))
+					])
+	
+	return iter([html])
 
 def json_response(environ, start_response):
 	data = ''
