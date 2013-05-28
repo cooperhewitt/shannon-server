@@ -6,8 +6,8 @@ shannon-server is a small WSGI-compliant httpony to calculate the [Shannon Entro
 You can run this locally with either Gunicorn
 --
 
-	$ gunicorn shannon:app
-	$ curl 'http://localhost:8000/?path=http://mysite.com/cat.jpg' | python -m json.tool
+	$ gunicorn shannon:application
+	$ curl 'http://localhost:8000/json/?path=http://mysite.com/cat.jpg' | python -m json.tool
 		
 	{
 	    "shannon-entropy": 7.98169630470466, 
