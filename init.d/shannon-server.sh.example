@@ -12,7 +12,7 @@ SHANNON_ROOT='/usr/local/cooperhewitt/shannon-server/'
 # http://docs.gunicorn.org/en/latest/configure.html
 
 GUNICORN=`which gunicorn`
-GUNICORN_OPTS='-u www -b 127.0.0.1:6521 -w 4 -k egg:gunicorn#gevent'
+GUNICORN_OPTS='-u www-data -b 127.0.0.1:6521'
 
 PIDFILE=/var/run/shannon-server.pid
 
