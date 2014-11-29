@@ -3,7 +3,7 @@ shannon-server
 
 shannon-server is a small WSGI-compliant httpony to calculate the [Shannon Entropy](http://en.wikipedia.org/wiki/Entropy_%28information_theory%29) for a given image.
 
-**This package is officially DEPRECATED. You should take a look at [plumbing-shannon-server](https://github.com/cooperhewitt/plumbing-shannon-server) instead.**
+**See also: [plumbing-shannon-server](https://github.com/cooperhewitt/plumbing-shannon-server) which does not play with things like Heroku yet but it a little more conservative about the kinds of things it will accept (paths and filenames and all that).**
 
 You can run this locally with either Gunicorn
 --
